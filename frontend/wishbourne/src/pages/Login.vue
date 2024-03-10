@@ -15,31 +15,13 @@
             <div class="caption py-1">{{ i.name }}</div>
           </v-tab>
         </v-tabs>
-        <v-window v-model="tab">
-          <v-window-item :value="tabs[0].name">
-            <v-card class="px-4">
-              <v-card-text>
-                <v-row>
-                  <v-col class="d-flex" cols="12" sm="3" xsm="12" align-end>
-                    <v-text-field v-model="publicKey" v-bind:disabled="false">
-                      <template v-slot:append>
-                        <v-btn
-                          v-if="publicKey"
-                          :loading="loading"
-                          class="mt-2"
-                          text="Submit"
-                          type="submit"
-                          block
-                        ></v-btn>
-                        <template v-if="!publicKey">
-                          <wallet-multi-button> </wallet-multi-button>
-                        </template>
-                      </template>
-                    </v-text-field>
+        <v-window v-model="tab" class="h-100">
+          <v-window-item :value="tabs[0].name" >
+            <v-row class=" align-center d-flex justify-center v-row w-100" style="text-wrap: nowrap;">
+                  <v-col class="d-flex justify-center align-center" cols="12" sm="3" xsm="12" align-end style="height: 300px !important;">
+                    <wallet-multi-button> </wallet-multi-button>
                   </v-col>
                 </v-row>
-              </v-card-text>
-            </v-card>
           </v-window-item>
           <v-window-item :value="tabs[1].name">
             <v-card class="px-4">

@@ -5,3 +5,4 @@
 **/*.rs.bk
 /*/**/test-ledger
 /*/**/.yarn
+.DS_Store

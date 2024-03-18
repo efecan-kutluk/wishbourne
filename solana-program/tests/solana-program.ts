@@ -8,8 +8,8 @@ describe("solana-program", () => {
   // Configure the client to use the local cluster.
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
-  const connection = new anchor.web3.Connection("http://127.0.0.1:8899");
-
+  //const connection = new anchor.web3.Connection("http://127.0.0.1:8899");
+  const connection = new anchor.web3.Connection("https://api.devnet.solana.com");
   const creator = anchor.web3.Keypair.fromSecretKey(Uint8Array.from(JSON.parse(process.env.SECRET_KEY)));
   const donator = anchor.web3.Keypair.generate()
   const celeb = anchor.web3.Keypair.generate();

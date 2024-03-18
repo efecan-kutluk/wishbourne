@@ -5,3 +5,4 @@
 **/*.rs.bk
 /*/**/test-ledger
 /*/**/.yarn
+/*/**/.next

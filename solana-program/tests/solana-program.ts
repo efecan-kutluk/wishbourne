@@ -1,22 +1,49 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { SolanaProgram } from "../target/types/solana_program";
+import dotenv from "dotenv";
+dotenv.config()
 
 describe("solana-program", () => {
   // Configure the client to use the local cluster.
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
+  const connection = new anchor.web3.Connection("http://127.0.0.1:8899");
+
+  const creator = anchor.web3.Keypair.fromSecretKey(Uint8Array.from(JSON.parse(process.env.SECRET_KEY)));
+  const donator = anchor.web3.Keypair.generate()
+  const celeb = anchor.web3.Keypair.generate();
+  const alice = anchor.web3.Keypair.generate()
+  const bob = anchor.web3.Keypair.generate()
+
+  connection.requestAirdrop(donator.publicKey, 2000000000)
+  connection.requestAirdrop(alice.publicKey, 2000000000)
+  connection.requestAirdrop(bob.publicKey, 2000000000)
 
   const program = anchor.workspace.SolanaProgram as Program<SolanaProgram>;
 
-  it("Should create a new campaign", async () => {
-    // Add your test here.
-    const donator = anchor.web3.Keypair.fromSecretKey(new Uint8Array([238,50,8,9,1,20,196,156,131,137,224,113,135,199,28,251,64,222,32,85,23,224,37,161,4,102,32,79,157,41,208,118,173,175,164,45,165,145,1,152,125,87,183,100,33,135,192,48,111,9,219,153,7,181,30,124,82,175,55,106,93,138,39,187]
-      ));
-    const celeb = anchor.web3.Keypair.generate();
+  const campaign_data = {
+    title: "Play Dead by Daylight"
+  }
 
+  const campaign_seeds = [Buffer.from("wishbourne-campaign"), Buffer.from(campaign_data.title), celeb.publicKey.toBuffer()]
+  const [campaignPDA] = anchor.web3.PublicKey.findProgramAddressSync(campaign_seeds, program.programId)
 
-    const tx = await program.methods.transferLamports(new anchor.BN(1000000000)).accounts({from: donator.publicKey, to: celeb.publicKey}).signers([donator]).rpc();
-    console.log("Your transaction signature", tx);
+  it("Create a new campaign", async () => {
+    const tx = await program.methods.createCampaign(campaign_data.title, celeb.publicKey)
+      .accounts({campaign: campaignPDA, initializer: creator.publicKey})
+      .signers([creator])
+      .rpc();
+    console.log("New campaign signature", tx);
   });
+
+  it("Initial donation", async () => {
+    const donation_seeds = [Buffer.from("wishbourne-donation"), creator.publicKey.toBuffer(), campaignPDA.toBuffer()]
+    const [donationPDA] = anchor.web3.PublicKey.findProgramAddressSync(donation_seeds, program.programId)    
+    const tx = await program.methods.createDonationSpace(new anchor.BN(10000000))
+      .accounts({donationSpace: donationPDA, campaign: campaignPDA})
+      .signers([creator])
+      .rpc()
+      console.log("Initial donation signature", tx);
+  })
 });

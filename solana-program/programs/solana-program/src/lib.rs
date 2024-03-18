@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_lang::system_program::{transfer, Transfer};
 use anchor_lang::solana_program::entrypoint::ProgramResult;
-declare_id!("8rmAWK5EZQHgYJL4DRa1HtqZcQMiDaoZVTCYdcoV9xut");
+declare_id!("5VpsAtBXYnczC2szekZsYgzJcN3rAMj13iA8YrWQyzCj");
 const CAMPAIGN_PREFIX: &'static str = "wishbourne-campaign";
 const DONATION_PREFIX: &'static str = "wishbourne-donation";
 

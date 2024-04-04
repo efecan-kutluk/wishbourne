@@ -8,7 +8,7 @@ Our vision is to revolutionize interaction with content creators by introducing 
 
 
 ## Development Plan
-This project is still under development (Devnet ID: ). The following features will be available in the future.
+This project is still under development (Devnet ID: 5VpsAtBXYnczC2szekZsYgzJcN3rAMj13iA8YrWQyzCj ). The following features will be available in the future.
 
 ### Core
 - Funding with lamports (will switch to USDC asap)
